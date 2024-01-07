@@ -34,6 +34,7 @@ pub enum Operation {
     SetTrustLineFlags(SetTrustLineFlagsOperation),
     LiquidityPoolDeposit(LiquidityPoolDepositOperation),
     LiquidityPoolWithdraw(LiquidityPoolWithdrawOperation),
+    InvokeHostFunction(InvokeHostFunctionOperation),
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -45,6 +46,7 @@ pub enum Payment {
     PathPaymentStrictReceive(PathPaymentStrictReceiveOperation),
     PathPaymentStrictSend(PathPaymentStrictSendOperation),
     AccountMerge(AccountMergeOperation),
+    InvokeHostFunction(InvokeHostFunctionOperation),
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
@@ -374,6 +376,12 @@ pub struct LiquidityPoolWithdrawOperation {
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+pub struct InvokeHostFunctionOperation {
+    #[serde(flatten)]
+    pub base: OperationBase,
+}
+
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 pub struct OperationLinks {
     #[serde(rename = "self")]
     pub self_: Link,
@@ -410,6 +418,7 @@ impl Operation {
             Operation::SetTrustLineFlags(op) => &op.base,
             Operation::LiquidityPoolDeposit(op) => &op.base,
             Operation::LiquidityPoolWithdraw(op) => &op.base,
+            Operation::InvokeHostFunction(op) => &op.base,
         }
     }
 }
@@ -422,6 +431,7 @@ impl Payment {
             Payment::PathPaymentStrictReceive(op) => &op.base,
             Payment::PathPaymentStrictSend(op) => &op.base,
             Payment::AccountMerge(op) => &op.base,
+            Payment::InvokeHostFunction(op) => &op.base,
         }
     }
 }
